@@ -1,0 +1,6 @@
+br/com/powtec/finance/batch/card_statement/job/JobRunner.class
+br/com/powtec/finance/batch/card_statement/CreateCardStatementApplication.class
+br/com/powtec/finance/batch/card_statement/reader/BatchReader.class
+br/com/powtec/finance/batch/card_statement/writer/AssetItemWriter.class
+br/com/powtec/finance/batch/card_statement/job/AssetJob.class
+br/com/powtec/finance/batch/card_statement/processor/AssetItemProcessor.class
