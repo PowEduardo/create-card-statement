@@ -1,5 +1,7 @@
 package br.com.powtec.finance.batch.card_statement.job;
 
+import java.util.List;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import br.com.powtec.finance.database.library.model.CreditCardInstallmentModel;
 import br.com.powtec.finance.database.library.model.movement.CreditCardMovementModel;
 
 @Configuration
@@ -23,10 +26,10 @@ public class AssetJob {
   public Step step1(JobRepository jobRepository,
       PlatformTransactionManager transactionManager,
       ItemReader<CreditCardMovementModel> reader,
-      ItemProcessor<CreditCardMovementModel, CreditCardMovementModel> processor,
-      ItemWriter<CreditCardMovementModel> writer) {
+      ItemProcessor<CreditCardMovementModel, List<CreditCardInstallmentModel>> processor,
+      ItemWriter<List<CreditCardInstallmentModel>> writer) {
     return new StepBuilder("Get movement not paid", jobRepository)
-        .<CreditCardMovementModel, CreditCardMovementModel>chunk(10, transactionManager) // Processa 10 registros por vez
+        .<CreditCardMovementModel, List<CreditCardInstallmentModel>>chunk(10, transactionManager) // Processa 10 registros por vez
         .reader(reader)
         .processor(processor)
         .writer(writer)

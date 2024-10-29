@@ -1,19 +1,29 @@
 package br.com.powtec.finance.batch.card_statement.writer;
 
-import org.springframework.batch.item.database.JpaItemWriter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import java.util.List;
 
-import br.com.powtec.finance.database.library.model.movement.CreditCardMovementModel;
-import jakarta.persistence.EntityManagerFactory;
+import org.springframework.batch.item.Chunk;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-@Configuration
-public class AssetItemWriter {
+import br.com.powtec.finance.database.library.model.CreditCardInstallmentModel;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-  @Bean
-  public JpaItemWriter<CreditCardMovementModel> writer(EntityManagerFactory entityManagerFactory) {
-    JpaItemWriter<CreditCardMovementModel> writer = new JpaItemWriter<>();
-    writer.setEntityManagerFactory(entityManagerFactory);
-    return writer;
-  }
+@Component
+public class AssetItemWriter implements ItemWriter<List<CreditCardInstallmentModel>> {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    @Override
+    public void write(Chunk<? extends List<CreditCardInstallmentModel>> chunk) throws Exception {
+        for (List<CreditCardInstallmentModel> itemList : chunk) {
+            itemList.forEach(entityManager::persist);
+        }
+        entityManager.flush();
+    }
+
 }
