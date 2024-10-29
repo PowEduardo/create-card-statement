@@ -1,10 +1,10 @@
 package br.com.powtec.finance.batch.card_statement.reader;
 
-import java.time.Year;
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,14 +21,15 @@ public class BatchReader {
   public JpaPagingItemReader<CreditCardMovementModel> readerMovements(EntityManagerFactory entityManagerFactory) {
     JpaPagingItemReader<CreditCardMovementModel> reader = new JpaPagingItemReader<>();
     reader.setEntityManagerFactory(entityManagerFactory);
-    reader.setQueryString("SELECT movements FROM CreditCardMovementModel AS movements WHERE paid IS FALSE");
+    reader.setQueryString(
+        "SELECT movements FROM CreditCardMovementModel AS movements LEFT JOIN movements.installments AS installments WHERE paid IS FALSE AND installments IS NULL");
     reader.setPageSize(10); // Define o tamanho da página, leia 10 registros por vez
     reader.setName("CreditCardMovement Reader");
     return reader;
   }
 
   @Bean
-  public JpaPagingItemReader<CreditCardStatementModel> readerStatement(EntityManagerFactory entityManagerFactory,
+  public ItemReader<CreditCardStatementModel> readerStatement(EntityManagerFactory entityManagerFactory,
       @Value("odate") String odate) {
     JpaPagingItemReader<CreditCardStatementModel> reader = new JpaPagingItemReader<>();
     YearMonth referenceDate = YearMonth.parse(odate);
@@ -40,6 +41,6 @@ public class BatchReader {
     Map<String, Object> parameterValues = new HashMap<>();
     parameterValues.put("referenceDate", referenceDate);
     reader.setParameterValues(parameterValues);
-    return reader;
+    return new CreateStatementIfNotExistsReader(reader, entityManagerFactory.createEntityManager(), odate);
   }
 }
