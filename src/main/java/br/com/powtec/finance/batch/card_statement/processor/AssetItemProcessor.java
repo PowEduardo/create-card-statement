@@ -42,7 +42,7 @@ public class AssetItemProcessor {
               .referenceDate(referenceDate)
               .value(valoresParcelas.get(i))
               .build());
-              referenceDate.plusMonths(1);
+              referenceDate = referenceDate.plusMonths(1);
         }
       } else {
         return null; // Retorna null caso já existam parcelas

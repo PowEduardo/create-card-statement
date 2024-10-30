@@ -17,3 +17,4 @@ spring:
     driverClassName: org.postgresql.Driver
     hikari:
       schema: public
+odate: 2024-10
