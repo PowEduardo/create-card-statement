@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 
-import br.com.powtec.finance.database.library.model.CreditCardModel;
 import br.com.powtec.finance.database.library.model.CreditCardStatementModel;
 import jakarta.persistence.EntityManagerFactory;
 

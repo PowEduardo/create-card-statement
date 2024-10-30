@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ public class AssetItemWriter implements ItemWriter<List<CreditCardInstallmentMod
 
     @Transactional
     @Override
-    public void write(Chunk<? extends List<CreditCardInstallmentModel>> chunk) throws Exception {
+    public void write(@NonNull Chunk<? extends List<CreditCardInstallmentModel>> chunk) throws Exception {
         for (List<CreditCardInstallmentModel> itemList : chunk) {
             itemList.forEach(entityManager::persist);
         }

@@ -2,7 +2,6 @@ package br.com.powtec.finance.batch.card_statement.writer;
 
 import java.time.YearMonth;
 
-import org.apache.commons.logging.Log;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Bean;
