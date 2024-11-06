@@ -26,11 +26,11 @@ public class AssetItemProcessor {
 
         // Divide o valor em parcelas com centavos distribuídos
         List<Double> valoresParcelas = dividirEmParcelas(valorTotal, numeroDeParcelas);
-        YearMonth referenceDate;
+        YearMonth referenceMonth;
         if (movement.getDate().getDayOfMonth() == 1) {
-          referenceDate = YearMonth.from(movement.getDate());
+          referenceMonth = YearMonth.from(movement.getDate());
         } else {
-          referenceDate = YearMonth.from(movement.getDate().plusMonths(1));
+          referenceMonth = YearMonth.from(movement.getDate().plusMonths(1));
         }
         // YearMonth firstReferenceDate = 
         // Cria as parcelas com os valores calculados
@@ -39,10 +39,10 @@ public class AssetItemProcessor {
               .entryType(EntryTypeEnum.INSTALLMENT)
               .installment(i + 1)
               .movement(movement)
-              .referenceDate(referenceDate)
+              .referenceMonth(referenceMonth)
               .value(valoresParcelas.get(i))
               .build());
-              referenceDate = referenceDate.plusMonths(1);
+              referenceMonth = referenceMonth.plusMonths(1);
         }
       } else {
         return null; // Retorna null caso já existam parcelas
