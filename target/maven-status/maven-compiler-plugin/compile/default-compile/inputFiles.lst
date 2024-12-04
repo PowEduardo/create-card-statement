@@ -1,6 +1,0 @@
-/Users/arruda/Develop/finance/create-card-statement/src/main/java/br/com/powtec/finance/batch/card_statement/CreateCardStatementApplication.java
-/Users/arruda/Develop/finance/create-card-statement/src/main/java/br/com/powtec/finance/batch/card_statement/job/AssetJob.java
-/Users/arruda/Develop/finance/create-card-statement/src/main/java/br/com/powtec/finance/batch/card_statement/job/JobRunner.java
-/Users/arruda/Develop/finance/create-card-statement/src/main/java/br/com/powtec/finance/batch/card_statement/processor/AssetItemProcessor.java
-/Users/arruda/Develop/finance/create-card-statement/src/main/java/br/com/powtec/finance/batch/card_statement/reader/BatchReader.java
-/Users/arruda/Develop/finance/create-card-statement/src/main/java/br/com/powtec/finance/batch/card_statement/writer/AssetItemWriter.java
