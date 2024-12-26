@@ -29,7 +29,7 @@ public class StatementItemWriter {
       public void write(@NonNull Chunk<? extends String> chunk) throws Exception {
         int rowsAffected = entityManager
             .createQuery("DELETE FROM CreditCardStatementModel WHERE referenceMonth = :referenceMonth")
-            .setParameter("referenceMonth", YearMonth.parse(chunk.getItems().get(0)))
+            .setParameter("referenceMonth", chunk.getItems().get(0))
             .executeUpdate();
         entityManager.flush();
 
@@ -60,9 +60,29 @@ public class StatementItemWriter {
       @Transactional
       @Override
       public void write(@NonNull Chunk<? extends String> chunk) throws Exception {
+        System.out.println("DEBS: " + chunk.getItems().get(0));
         int rowsAffected = entityManager.createQuery(
             "UPDATE CreditCardInstallmentModel AS installments SET installments.statement = (SELECT statement FROM CreditCardStatementModel AS statement WHERE statement.referenceMonth = :referenceMonth) WHERE installments.referenceMonth = :referenceMonth")
-            .setParameter("referenceMonth", YearMonth.parse(chunk.getItems().get(0)))
+            .setParameter("referenceMonth", chunk.getItems().get(0))
+            .executeUpdate();
+        entityManager.flush();
+        log.info(rowsAffected + " rows affected");
+      }
+
+    };
+  }
+
+  @Bean
+  public ItemWriter<String> updateStatement() {
+    return new ItemWriter<String>() {
+
+      @Transactional
+      @Override
+      public void write(@NonNull Chunk<? extends String> chunk) throws Exception {
+        System.out.println("DEB: " + chunk.getItems().get(0));
+        int rowsAffected = entityManager.createQuery(
+            "UPDATE CreditCardStatementModel AS statement SET statement.value = (SELECT SUM(installment.value) FROM CreditCardInstallmentModel AS installment WHERE installment.referenceMonth = :referenceMonth) WHERE statement.referenceMonth = :referenceMonth")
+            .setParameter("referenceMonth", chunk.getItems().get(0))
             .executeUpdate();
         entityManager.flush();
         log.info(rowsAffected + " rows affected");

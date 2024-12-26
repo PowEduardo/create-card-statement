@@ -13,7 +13,7 @@ import br.com.powtec.finance.database.library.model.CreditCardInstallmentModel;
 import br.com.powtec.finance.database.library.model.movement.CreditCardMovementModel;
 
 @Configuration
-public class AssetItemProcessor {
+public class InstallmentItemProcessor {
 
   @Bean
   public ItemProcessor<CreditCardMovementModel, List<CreditCardInstallmentModel>> processor() {
@@ -26,11 +26,15 @@ public class AssetItemProcessor {
 
         // Divide o valor em parcelas com centavos distribuídos
         List<Double> valoresParcelas = dividirEmParcelas(valorTotal, numeroDeParcelas);
-        YearMonth referenceMonth;
+        YearMonth yearMonth;
+        String referenceMonth;
         if (movement.getDate().getDayOfMonth() == 1) {
-          referenceMonth = YearMonth.from(movement.getDate());
+          yearMonth = YearMonth.from(movement.getDate());
+          referenceMonth = yearMonth.toString();
         } else {
-          referenceMonth = YearMonth.from(movement.getDate().plusMonths(1));
+          yearMonth = YearMonth.from(movement.getDate().plusMonths(1));
+
+          referenceMonth = yearMonth.toString();
         }
         // YearMonth firstReferenceDate = 
         // Cria as parcelas com os valores calculados
@@ -42,7 +46,8 @@ public class AssetItemProcessor {
               .referenceMonth(referenceMonth)
               .value(valoresParcelas.get(i))
               .build());
-              referenceMonth = referenceMonth.plusMonths(1);
+              yearMonth = yearMonth.plusMonths(1);
+              referenceMonth = yearMonth.toString();
         }
       } else {
         return null; // Retorna null caso já existam parcelas

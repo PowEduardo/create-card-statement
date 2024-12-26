@@ -76,12 +76,25 @@ public class BatchJob {
   }
 
   @Bean
-  public Job statementJob(JobRepository jobRepository, Step step1, Step step2, Step step3, Step step4) {
+  public Step step5(JobRepository jobRepository,
+      PlatformTransactionManager transactionManager,
+      ItemReader<String> reader,
+      @Qualifier("updateStatement") ItemWriter<String> updateStatement) {
+    return new StepBuilder("Update statement value", jobRepository)
+        .<String, String>chunk(1, transactionManager)
+        .reader(reader)
+        .writer(updateStatement)
+        .build();
+  }
+
+  @Bean
+  public Job statementJob(JobRepository jobRepository, Step step1, Step step2, Step step3, Step step4, Step step5) {
     return new JobBuilder("Create statement card", jobRepository)
         .start(step1)
         .next(step2)
         .next(step3)
         .next(step4)
+        .next(step5)
         .build();
   }
 }

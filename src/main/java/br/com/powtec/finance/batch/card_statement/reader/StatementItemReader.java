@@ -1,7 +1,5 @@
 package br.com.powtec.finance.batch.card_statement.reader;
 
-import java.time.YearMonth;
-
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
@@ -52,7 +50,7 @@ public class StatementItemReader {
         if (!read) {
           read = true;
           return CreditCardStatementModel.builder()
-              .referenceMonth(YearMonth.parse(odate))
+              .referenceMonth(odate)
               .paid(false)
               .build();
         }
