@@ -58,7 +58,6 @@ public class StatementItemWriter {
       @Transactional
       @Override
       public void write(@NonNull Chunk<? extends String> chunk) throws Exception {
-        System.out.println("DEBS: " + chunk.getItems().get(0));
         int rowsAffected = entityManager.createQuery(
             "UPDATE CreditCardInstallmentModel AS installments SET installments.statement = (SELECT statement FROM CreditCardStatementModel AS statement WHERE statement.referenceMonth = :referenceMonth) WHERE installments.referenceMonth = :referenceMonth")
             .setParameter("referenceMonth", chunk.getItems().get(0))
