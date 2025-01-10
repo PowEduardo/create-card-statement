@@ -58,7 +58,6 @@ public class BatchJob {
     return new StepBuilder("Create Statement", jobRepository)
         .<CreditCardStatementModel, CreditCardStatementModel>chunk(1, transactionManager)
         .reader(reader)
-        .reader(reader)
         .writer(createStatement)
         .build();
   }

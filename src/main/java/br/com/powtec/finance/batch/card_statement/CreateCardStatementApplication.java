@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableBatchProcessing
 @ComponentScan(basePackages = {"br.com.powtec.finance"})
-@EnableJpaRepositories(basePackages = {"br.com.powtec.finance"})
+@EnableJpaRepositories(
+    basePackages = "br.com.powtec.finance.database.library.repository"
+)
 @EntityScan(basePackages = {"br.com.powtec.finance.database.library.model"})
 public class CreateCardStatementApplication {
 
