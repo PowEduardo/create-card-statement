@@ -51,7 +51,6 @@ public class StatementItemReader {
           read = true;
           return CreditCardStatementModel.builder()
               .referenceMonth(odate)
-              .paid(false)
               .build();
         }
         read = false;
